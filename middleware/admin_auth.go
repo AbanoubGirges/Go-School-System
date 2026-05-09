@@ -14,7 +14,7 @@ func AdminAuthMiddleware(next http.Handler) http.HandlerFunc {
 		token := r.Header.Get("Authorization")
 		claims, err := services.ValidateJWT(token, services.SecretKey)
 		if err != nil {
-			services.RespondWithJson(w, 403, map[string]string{"error": "INVALID_TOKEN"})
+			services.RespondWithJson(w, 401, map[string]string{"error": "INVALID_TOKEN"})
 			fmt.Print("invalid token")
 			return
 		}

@@ -11,7 +11,7 @@ import (
 
 	"github.com/AbanoubGirges/malaykaproject/models"
 	"github.com/AbanoubGirges/malaykaproject/services"
-	migrations "github.com/AbanoubGirges/malaykaproject/sqlite"
+	migrations "github.com/AbanoubGirges/malaykaproject/repo"
 	"github.com/google/uuid"
 )
 
@@ -78,7 +78,7 @@ func DeleteStudentHandler(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value("claims").(map[string]interface{})
 	requestCtx, cancel := context.WithTimeout(r.Context(), 10*time.Second)
 	defer cancel()
-	err := migrations.DeleteStudentFromDatabase(uint(claims["ID"].(float64)), services.DB, requestCtx)
+	err := migrations.DeleteStudentFromDatabase(uint(claims["user_id"].(float64)), services.DB, requestCtx)
 	if err != nil {
 		services.RespondWithJson(w, 500, map[string]string{"error": "INTERNAL_SERVER_ERROR"})
 		return

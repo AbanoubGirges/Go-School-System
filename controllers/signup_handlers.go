@@ -10,7 +10,7 @@ import (
 
 	"github.com/AbanoubGirges/malaykaproject/models"
 	"github.com/AbanoubGirges/malaykaproject/services"
-	migrations "github.com/AbanoubGirges/malaykaproject/sqlite"
+	migrations "github.com/AbanoubGirges/malaykaproject/repo"
 	"github.com/google/uuid"
 )
 
@@ -105,6 +105,7 @@ func EditProfileHandler(w http.ResponseWriter, r *http.Request) {
 		services.RespondWithJson(w,500,struct{Error string}{Error:"INTERNAL_SERVER_ERROR"})
 		return
 	}
+	services.RespondWithJson(w, 200, struct{Message string}{Message:"Profile updated successfully"})
 }
 func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	claims:= r.Context().Value("claims").(map[string]interface{})

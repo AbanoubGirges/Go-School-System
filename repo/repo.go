@@ -8,12 +8,13 @@ import (
 	"fmt"
 	"github.com/AbanoubGirges/malaykaproject/models"
 	"github.com/google/uuid"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func SetupDatabase() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("malayka.db"), &gorm.Config{})
+func SetupDatabase(dbUrl string) *gorm.DB {
+	dsn:=dbUrl
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect database")
 	}

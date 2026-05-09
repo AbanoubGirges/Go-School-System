@@ -2,13 +2,14 @@ package controllers
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"time"
-	"encoding/json"
+
 	"github.com/AbanoubGirges/malaykaproject/models"
+	migrations "github.com/AbanoubGirges/malaykaproject/repo"
 	"github.com/AbanoubGirges/malaykaproject/services"
-	migrations "github.com/AbanoubGirges/malaykaproject/sqlite"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -22,10 +23,6 @@ func CreateClassAttendance(w http.ResponseWriter, r *http.Request) {
 		services.RespondWithJson(w, 400, struct{Error string}{Error: "FAILED_TO_DECODE"})
 		return
 	}
-	for i:= range studentsAttendance{
-		studentsAttendance[i].Blame=claims["userId"].(uint32)
-		studentsAttendance[i].ClassID=uint32(classId)
-	}
 	if claims["role"] != "admin" {
 		classId = claims["class"].(uint)
 	} else {
@@ -35,6 +32,10 @@ func CreateClassAttendance(w http.ResponseWriter, r *http.Request) {
 			services.RespondWithJson(w,500,map[string]string{"error":"FAILED_TO_PARSE_CLASS_ID"})
 		}
 		classId= uint(id64)
+	}
+	for i:= range studentsAttendance{
+		studentsAttendance[i].Blame=claims["user_id"].(uint32)
+		studentsAttendance[i].ClassID=uint32(classId)
 	}
 	err:=migrations.CreateClassAttendanceInDatabase(studentsAttendance,services.DB,requestCtx)
 	if err!=nil{
@@ -81,7 +82,7 @@ func UpdateClassAttendance(w http.ResponseWriter, r *http.Request) {
 		services.RespondWithJson(w, 400, struct{Error string}{Error: "FAILED_TO_DECODE"})
 		return
 	}
-	studentsAttendance.Blame=claims["userId"].(uint32)
+	studentsAttendance.Blame=claims["user_id"].(uint32)
 	err:=migrations.UpdateClassAttendanceInDatabase(studentsAttendance,services.DB,requestCtx)
 	if err!=nil{
 		services.RespondWithJson(w,500,map[string]string{"error":"FAILED_TO_UPDATE_ATTENDANCE"})

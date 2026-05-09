@@ -7,7 +7,7 @@ import (
 	"time"
 	"errors"
 	"github.com/AbanoubGirges/malaykaproject/services"
-	migrations "github.com/AbanoubGirges/malaykaproject/sqlite"
+	migrations "github.com/AbanoubGirges/malaykaproject/repo"
 	//"github.com/AbanoubGirges/malaykaproject/services"
 )
 

@@ -8,15 +8,15 @@ import (
 
 	"github.com/AbanoubGirges/malaykaproject/routes"
 	"github.com/AbanoubGirges/malaykaproject/services"
-	migrations "github.com/AbanoubGirges/malaykaproject/sqlite"
+	migrations "github.com/AbanoubGirges/malaykaproject/repo"
 	"github.com/joho/godotenv"
 )
 
 func main() {
 	// ctx:=context.Background()
-	var DB = migrations.SetupDatabase()
-	services.SetDB(DB)
 	godotenv.Load(".env")
+	var DB = migrations.SetupDatabase(os.Getenv("DB_URL"))
+	services.SetDB(DB)
 	portForServer := os.Getenv("PORT")
 	if portForServer == "" {
 		log.Println("Failed to get PORT from .env file")
