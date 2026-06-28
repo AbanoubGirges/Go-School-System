@@ -1,7 +1,9 @@
 package config
 
 import (
-	models "github.com/AbanoubGirges/Go-School-System/internal/models/user"
+	userModels "github.com/AbanoubGirges/Go-School-System/internal/models/user"
+	classModels "github.com/AbanoubGirges/Go-School-System/internal/models/class"
+	studentModels "github.com/AbanoubGirges/Go-School-System/internal/models/student"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -14,6 +16,10 @@ func SetupDB(dbUrl string) *Repo{
 	if err !=nil{
 		panic("Failed to connect to database")
 	}
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&userModels.User{})
+	db.AutoMigrate(&classModels.Class{})
+	db.AutoMigrate(&classModels.Class_User{})
+	db.AutoMigrate(&studentModels.Student{})
+	db.AutoMigrate(&studentModels.Attendance{})
 	return &Repo{db}
 }
